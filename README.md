@@ -1,0 +1,9 @@
+[LISEZ-MOI.txt](https://github.com/user-attachments/files/34770807/LISEZ-MOI.txt)
+Test de QI Pro - projet Android
+1. Créez un dépôt GitHub (gratuit) et envoyez-y TOUT le contenu de ce dossier
+   (y compris le dossier caché .github).
+2. Onglet Actions > "Construire l'APK" > Run workflow.
+3. Après 3 à 5 minutes, ouvrez l'exécution terminée et téléchargez
+   "test-de-qi-pro-apk" en bas de page (zip contenant app-debug.apk).
+4. Copiez app-debug.apk sur le téléphone et installez-le
+   (autoriser les sources inconnues si Android le demande).
