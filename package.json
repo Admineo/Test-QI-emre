@@ -1,0 +1,11 @@
+{
+  "name": "qi-pro-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Test de QI Pro - application Android",
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2"
+  }
+}
