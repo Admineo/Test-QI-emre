@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Test de QI Pro — Emre Bayram</title>
+<style>
+:root{
+  --blue:#1273c4; --blue-d:#0b5ea8; --blue-x:#2f9df0; --blue-l:#e3f1fc;
+  --red:#d63b2f; --amber:#d97706; --green:#16a34a; --violet:#7c3aed;
+  --ink:#152a42; --muted:#5b7186; --line:#c9d6e2;
+  --bg:#e9eff5; --card:#ffffff; --track:#dbe5ee;
+  --pp-blue:#003087; --pp-cyan:#009cde; --pp-gold:#ffc439;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scrollbar-color:var(--blue) var(--track);scrollbar-width:thin}
+body{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;line-height:1.5}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;
+  background:radial-gradient(640px 480px at 12% 8%,rgba(18,115,196,.16),transparent 62%),radial-gradient(720px 560px at 88% 92%,rgba(124,58,237,.13),transparent 62%),radial-gradient(rgba(21,42,66,.055) 1px,transparent 1.4px);
+  background-size:auto,auto,22px 22px}
+.bg::before,.bg::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.5}
+.bg::before{width:340px;height:340px;left:-90px;top:16%;background:rgba(47,157,240,.28);animation:drift 16s ease-in-out infinite alternate}
+.bg::after{width:300px;height:300px;right:-80px;bottom:8%;background:rgba(124,58,237,.22);animation:drift 20s ease-in-out infinite alternate-reverse}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(46px,-38px)}}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--track);border-radius:8px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue-x),var(--blue-d));border-radius:8px;border:2px solid var(--track)}
+::-webkit-scrollbar-thumb:hover{background:var(--blue-d)}
+.wrap{max-width:760px;margin:0 auto;padding:26px 18px 10px}
+.screen{display:none}
+.screen.active{display:block;animation:screenIn .45s cubic-bezier(.2,.8,.25,1)}
+@keyframes screenIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.7);border-radius:24px;box-shadow:0 22px 55px rgba(21,42,66,.13),0 3px 10px rgba(21,42,66,.06);padding:clamp(22px,5vw,40px)}
+footer{text-align:center;color:var(--muted);font-size:13.5px;padding:26px 16px 34px}
+footer strong{color:var(--ink)}
+.foot-don{display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:var(--pp-blue);font-weight:800;text-decoration:none;border-bottom:2px solid var(--pp-gold);padding-bottom:1px}
+.foot-don:hover{color:var(--pp-cyan)}
+.brand{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:20px}
+.brand svg{width:46px;height:46px;filter:drop-shadow(0 6px 14px rgba(18,115,196,.35))}
+.brand span{font-weight:800;font-size:19px;letter-spacing:.4px}
+.intro-title{text-align:center;font-size:clamp(30px,7vw,42px);font-weight:800;letter-spacing:-.5px;background:linear-gradient(120deg,var(--blue-d),var(--blue-x) 55%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.intro-sub{text-align:center;color:var(--muted);font-size:16px;max-width:520px;margin:10px auto 22px}
+.stat-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.stat-chip{display:flex;align-items:center;gap:7px;background:var(--blue-l);color:var(--blue-d);font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;border:1px solid #bcd9f2}
+.stat-chip svg{width:16px;height:16px}
+.cat-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.cat-item{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:14px;border:1.5px solid var(--line);background:#fbfdff;font-weight:700;font-size:14px}
+.cat-item svg{width:19px;height:19px;flex:none}
+.cat-item small{display:block;font-weight:600;color:var(--muted);font-size:12px}
+.profile-form{background:#f6fafd;border:1.5px solid #d7e6f3;border-radius:18px;padding:18px;margin-bottom:20px}
+.profile-form.shake{animation:shake .45s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.form-title{display:flex;align-items:center;gap:8px;font-size:14px;letter-spacing:1.2px;color:var(--blue-d);margin-bottom:16px}
+.form-title svg{width:18px;height:18px}
+.field{margin-bottom:14px}
+.field-row{display:grid;grid-template-columns:1fr 1.7fr;gap:12px}
+.field label{display:block;font-weight:800;font-size:13.5px;margin-bottom:6px;color:var(--ink)}
+.field label em{color:var(--red);font-style:normal}
+.field label span{color:var(--muted);font-weight:600}
+.input-wrap{position:relative;display:flex;align-items:center}
+.input-wrap>svg{position:absolute;left:12px;width:18px;height:18px;color:var(--muted);pointer-events:none}
+.input-wrap input{width:100%;padding:13px 14px 13px 40px;border:2px solid var(--line);border-radius:12px;background:#fff;font:inherit;font-size:15.5px;font-weight:600;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.input-wrap input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(18,115,196,.16)}
+.input-wrap input::placeholder{color:#9db0c1;font-weight:500}
+.input-wrap.invalid input{border-color:var(--red);box-shadow:0 0 0 3px rgba(214,59,47,.12)}
+.input-wrap.invalid>svg{color:var(--red)}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.field-err{display:none;color:var(--red);font-size:12.5px;font-weight:700;margin-top:5px}
+.field-err.show{display:block}
+.privacy{display:flex;align-items:flex-start;gap:7px;color:var(--muted);font-size:12.5px;margin:4px 0 16px}
+.privacy svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--green)}
+.primary{width:100%;padding:17px;border:none;border-radius:15px;cursor:pointer;background:linear-gradient(135deg,var(--blue-x),var(--blue-d));color:#fff;font-size:18.5px;font-weight:800;font-family:inherit;letter-spacing:.3px;box-shadow:0 12px 26px rgba(18,115,196,.35);transition:transform .16s,box-shadow .16s,filter .16s}
+.primary:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 16px 32px rgba(18,115,196,.42)}
+.primary:active:not(:disabled){transform:translateY(0)}
+.primary:disabled{background:#b9c8d6;box-shadow:none;cursor:not-allowed}
+.secondary{width:100%;padding:15px;border-radius:15px;cursor:pointer;background:#fff;color:var(--blue-d);border:2px solid var(--blue);font-size:16.5px;font-weight:800;font-family:inherit;transition:background .16s,transform .16s}
+.secondary:hover{background:var(--blue-l);transform:translateY(-2px)}
+.ghost{display:block;margin:12px auto 0;background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;font-family:inherit;text-decoration:underline dotted;padding:6px 10px}
+.ghost:hover{color:var(--blue-d)}
+button:focus-visible,a:focus-visible,.opt:focus-visible{outline:3px solid rgba(18,115,196,.5);outline-offset:2px}
+.donation{margin-top:22px}
+.don-inner{background:linear-gradient(135deg,#eef7ff,#fff8e4);border:1.5px solid #cfe3f7;border-radius:18px;padding:18px;position:relative;overflow:hidden}
+.don-inner::before{content:"";position:absolute;right:-40px;top:-40px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,57,.35),transparent 70%)}
+.don-head{display:flex;align-items:center;gap:11px;margin-bottom:14px;position:relative}
+.don-heart{width:38px;height:38px;flex:none;border-radius:12px;background:linear-gradient(135deg,#ff5f8f,#d63b2f);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(214,59,47,.3);animation:heartbeat 2.4s ease-in-out infinite}
+.don-heart svg{width:20px;height:20px;fill:#fff}
+@keyframes heartbeat{0%,100%{transform:scale(1)}12%{transform:scale(1.12)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
+.don-head strong{display:block;font-size:15.5px}
+.don-head small{color:var(--muted);font-size:12.5px;font-weight:600}
+.don-amounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:relative}
+.don-chip{border:2px solid #b9d4ee;background:#fff;color:var(--pp-blue);font:inherit;font-weight:800;font-size:13.5px;padding:7px 14px;border-radius:999px;cursor:pointer;transition:all .15s}
+.don-chip:hover{border-color:var(--pp-cyan);transform:translateY(-1px)}
+.don-chip.active{background:var(--pp-blue);border-color:var(--pp-blue);color:#fff;box-shadow:0 4px 10px rgba(0,48,135,.25)}
+.don-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:14px;background:linear-gradient(135deg,var(--pp-gold),#f0a500);color:#1a2b49;font-weight:800;font-size:16.5px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 10px 22px rgba(240,165,0,.32);transition:transform .16s,box-shadow .16s}
+.don-btn:hover{transform:translateY(-2px);box-shadow:0 14px 28px rgba(240,165,0,.42)}
+.don-btn::after{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);transition:left .5s}
+.don-btn:hover::after{left:130%}
+.pp-mark{font-style:italic;font-weight:800;font-size:18px;letter-spacing:-.5px}
+.pp-mark i{color:var(--pp-blue);font-style:italic}
+.pp-mark b{color:var(--pp-cyan)}
+.don-btn .arr{font-size:18px}
+.don-note{display:block;text-align:center;color:var(--muted);font-size:11.5px;font-weight:600;margin-top:9px;position:relative}
+.timer{text-align:center;font-size:clamp(40px,9vw,54px);font-weight:800;color:var(--red);letter-spacing:2px;font-variant-numeric:tabular-nums;line-height:1.1;margin-bottom:16px}
+.timer.urgent{animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.75}}
+.progress{height:8px;background:var(--track);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.progress-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--blue-x),var(--blue));transition:width .45s cubic-bezier(.2,.8,.25,1)}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:22px}
+.q-count{font-weight:800;color:var(--muted);letter-spacing:1.6px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:12.5px;letter-spacing:1.1px;padding:6px 12px;border-radius:999px}
+.chip svg{width:14px;height:14px}
+.qbody{animation:qin .35s ease}
+@keyframes qin{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+.q-text{text-align:center;font-size:clamp(19px,4.6vw,25px);font-weight:700;line-height:1.45;margin-bottom:18px}
+.q-figure{display:flex;justify-content:center;margin-bottom:20px}
+.fig{height:160px;max-width:100%}
+.fig-wide{width:min(100%,430px);height:auto}
+.model-label{text-align:center;font-weight:800;color:var(--muted);letter-spacing:1.5px;font-size:12.5px;margin-bottom:6px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px}
+.options.list{grid-template-columns:1fr}
+.opt{position:relative;padding:16px 14px;border:2px solid var(--line);border-radius:14px;background:#fff;font-size:17.5px;font-weight:700;color:var(--ink);font-family:inherit;cursor:pointer;min-height:60px;display:flex;align-items:center;justify-content:center;text-align:center;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}
+.opt:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 8px 18px rgba(21,42,66,.1)}
+.opt.selected{border-color:var(--blue);background:var(--blue-l);box-shadow:0 0 0 3px rgba(18,115,196,.18)}
+.opt .tick{position:absolute;top:7px;right:11px;color:var(--blue);font-weight:800;opacity:0;transition:opacity .15s}
+.opt.selected .tick{opacity:1}
+.opt-fig svg{height:84px;width:auto;max-width:100%}
+.res-title{text-align:center;font-size:clamp(26px,6vw,34px);font-weight:800;margin-bottom:2px}
+.res-profile{text-align:center;color:var(--muted);font-weight:700;font-size:14.5px;margin-bottom:6px}
+.auto-note{display:none;text-align:center;background:#fdf0ee;color:var(--red);border:1.5px solid #f2c4be;font-weight:700;font-size:14px;border-radius:12px;padding:10px 14px;margin:12px 0}
+.auto-note.show{display:block}
+.age-note{text-align:center;color:var(--violet);background:#f3efff;border:1.5px solid #ddd0fb;font-weight:700;font-size:13px;border-radius:999px;padding:7px 14px;margin:0 auto 16px;max-width:520px}
+.gauge-wrap{display:flex;flex-direction:column;align-items:center;margin:14px 0 4px}
+.gauge{width:min(280px,80%)}
+.gauge-tick{font-size:11px;font-weight:700;fill:var(--muted)}
+#gaugeArc{transition:stroke-dashoffset 1.25s cubic-bezier(.2,.8,.25,1)}
+#needle{transform-origin:100px 100px;transition:transform 1.25s cubic-bezier(.2,.8,.25,1)}
+.iq-num{margin-top:-36px;text-align:center}
+.iq-num span{display:block;font-size:56px;font-weight:800;letter-spacing:-1px;line-height:1;background:linear-gradient(120deg,var(--blue-d),var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.iq-num small{color:var(--muted);font-weight:700;letter-spacing:1.4px;font-size:12px}
+.classif{text-align:center;margin:12px 0 14px}
+.classif span{display:inline-block;font-weight:800;font-size:15px;padding:8px 18px;border-radius:999px}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{background:#f6fafd;border:1.5px solid #d7e6f3;border-radius:14px;padding:13px 8px;text-align:center}
+.stat b{display:block;font-size:21px;font-weight:800;color:var(--blue-d)}
+.stat small{color:var(--muted);font-weight:700;font-size:11.5px;letter-spacing:.6px}
+.res-block{background:#fbfdff;border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-bottom:18px}
+.res-block h3{font-size:13.5px;letter-spacing:1.4px;color:var(--muted);margin-bottom:14px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.bar-row:last-child{margin-bottom:0}
+.bar-label{display:flex;align-items:center;gap:6px;width:118px;flex:none;font-weight:700;font-size:13px}
+.bar-label svg{width:15px;height:15px}
+.bar-track{flex:1;height:12px;background:var(--track);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;width:0;border-radius:99px;transition:width 1s cubic-bezier(.2,.8,.25,1)}
+.bar-score{width:44px;flex:none;text-align:right;font-weight:800;font-size:13.5px;font-variant-numeric:tabular-nums}
+.curve-svg{width:100%;height:auto}
+.res-actions{display:grid;gap:12px;margin-top:6px}
+.rev-top{position:sticky;top:0;z-index:20;background:rgba(233,239,245,.92);backdrop-filter:blur(8px);display:flex;align-items:center;gap:14px;padding:12px 4px;margin-bottom:14px}
+.rev-top h2{font-size:20px;font-weight:800}
+.back-btn{border:2px solid var(--blue);background:#fff;color:var(--blue-d);font-weight:800;font-family:inherit;border-radius:12px;padding:9px 14px;cursor:pointer;font-size:14px;transition:background .15s}
+.back-btn:hover{background:var(--blue-l)}
+.rev-item{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 6px 16px rgba(21,42,66,.06)}
+.rev-item header{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:10px}
+.rev-num{width:30px;height:30px;flex:none;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13.5px}
+.rev-status{margin-left:auto;font-weight:800;font-size:12.5px;padding:5px 11px;border-radius:999px}
+.rev-status.good{background:#dcfce7;color:var(--green)}
+.rev-status.bad{background:#fde4e1;color:var(--red)}
+.rev-status.skip{background:#e6ecf2;color:var(--muted)}
+.rev-q{font-weight:700;font-size:15.5px;margin-bottom:10px}
+.rev-fig{display:flex;justify-content:center;margin-bottom:10px}
+.rev-fig .fig{height:130px}
+.rev-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14.5px;font-weight:600;border-radius:11px;padding:9px 12px;margin-bottom:7px;border:1.5px solid}
+.rev-line.good{background:#f0fdf4;border-color:#bbe7c8;color:#14532d}
+.rev-line.bad{background:#fef2f1;border-color:#f2c4be;color:#7c2d26}
+.rev-line.skip{background:#f1f5f9;border-color:#d6e0ea;color:var(--muted)}
+.mini-fig svg{height:60px;width:auto;vertical-align:middle}
+.rev-exp{background:var(--blue-l);border-radius:11px;padding:11px 13px;font-size:14px;color:var(--ink);margin-top:4px}
+.rev-exp strong{color:var(--blue-d)}
+.confetti{position:fixed;top:-16px;width:9px;height:14px;z-index:60;pointer-events:none;animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(108vh) rotate(720deg)}}
+/* ---------- Aide ouverture / aperçu ---------- */
+.preview-banner{display:none;position:sticky;top:0;z-index:50;align-items:flex-start;gap:10px;background:linear-gradient(135deg,#fff4d6,#ffe9c2);border-bottom:2px solid var(--amber);color:#7a4a00;padding:12px 16px;font-size:13.5px;font-weight:600;box-shadow:0 6px 18px rgba(217,119,6,.18)}
+.preview-banner.show{display:flex}
+.preview-banner svg{width:20px;height:20px;flex:none;margin-top:1px;color:var(--amber)}
+.preview-banner strong{color:#5c3800}
+.preview-close{margin-left:auto;flex:none;border:none;background:rgba(122,74,0,.12);color:#7a4a00;width:28px;height:28px;border-radius:8px;font-weight:800;cursor:pointer;font-size:15px}
+.preview-close:hover{background:rgba(122,74,0,.22)}
+.open-hint{display:flex;align-items:flex-start;gap:8px;background:#eef7ff;border:1.5px solid #bcd9f2;color:var(--blue-d);border-radius:12px;padding:11px 13px;font-size:12.5px;font-weight:600;margin:0 0 16px}
+.open-hint svg{width:16px;height:16px;flex:none;margin-top:2px}
+.noscript-card{max-width:640px;margin:26px auto;background:#fff;border:2px solid var(--red);border-radius:20px;padding:24px;box-shadow:0 18px 44px rgba(214,59,47,.18);color:var(--ink)}
+.noscript-card h2{color:var(--red);font-size:20px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.noscript-card p{font-size:14.5px;margin-bottom:10px}
+.noscript-card strong{color:var(--blue-d)}
+@media (max-width:560px){.field-row{grid-template-columns:1fr}}
+@media (max-width:420px){
+  .options{gap:9px}.opt{font-size:15.5px;padding:13px 10px}
+  .bar-label{width:96px;font-size:12px}.res-stats{gap:7px}
+  .don-btn{font-size:15px}.pp-mark{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<div class="preview-banner" id="previewBanner" role="alert">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 9v4M12 17h.01M10.3 3.9L2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div><strong>Mode aperçu probable.</strong> Si les boutons ne répondent pas, ouvrez ce fichier dans un navigateur complet (Chrome, Firefox, Edge, Safari) via « Ouvrir avec », ou mettez-le en ligne.</div>
+  <button class="preview-close" id="previewClose" aria-label="Fermer l’avertissement">✕</button>
+</div>
+
+<noscript>
+  <div class="noscript-card">
+    <h2>⚠️ JavaScript est désactivé (mode aperçu)</h2>
+    <p>Oui, c'est normal : l'aperçu d'un fichier bloque JavaScript. Les boutons du test en ont besoin pour fonctionner.</p>
+    <p><strong>Solution :</strong> ouvrez ce fichier dans un vrai navigateur — <strong>Chrome, Firefox, Edge ou Safari</strong> — via « Ouvrir avec », ou hébergez-le en ligne. Tout fonctionnera alors normalement.</p>
+  </div>
+</noscript>
+
+<main class="wrap">
+
+  <section id="screen-intro" class="screen active">
+    <div class="card">
+      <div class="brand">
+        <svg viewBox="0 0 48 48" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f9df0"/><stop offset="1" stop-color="#0b5ea8"/></linearGradient></defs>
+          <path d="M24 3l18 10.5v21L24 45 6 34.5v-21z" fill="url(#lg)"/>
+          <path d="M15 28c0-7.5 4-13 9-13s9 5.5 9 13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="15" cy="30" r="3.2" fill="#fff"/><circle cx="33" cy="30" r="3.2" fill="#fff"/><circle cx="24" cy="15" r="3.2" fill="#ffd166"/>
+        </svg>
+        <span>Test de QI Pro</span>
+      </div>
+      <h1 class="intro-title">Mesurez votre intelligence logique</h1>
+      <p class="intro-sub">40 questions à difficulté progressive pour évaluer votre raisonnement numérique, logique, verbal et spatial. Renseignez votre profil pour un résultat personnalisé et ajusté à votre âge.</p>
+
+      <div class="stat-chips">
+        <span class="stat-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>30 minutes</span>
+        <span class="stat-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 6h16M4 12h16M4 18h10"/></svg>40 questions</span>
+        <span class="stat-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>4 catégories</span>
+      </div>
+
+      <div class="cat-legend" id="catLegend"></div>
+
+      <div class="open-hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1" stroke-linecap="round"/></svg>
+        <span>Si un bouton ne réagit pas, vous êtes en mode aperçu : ouvrez le fichier dans Chrome, Firefox, Edge ou Safari (« Ouvrir avec »). Le test nécessite JavaScript.</span>
+      </div>
+
+      <form class="profile-form" id="profileForm" novalidate>
+        <h3 class="form-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6" stroke-linecap="round"/></svg>VOS INFORMATIONS</h3>
+        <div class="field">
+          <label for="fName">Nom complet <em>*</em></label>
+          <div class="input-wrap" id="wrapName">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6" stroke-linecap="round"/></svg>
+            <input id="fName" type="text" placeholder="Ex. Emre Bayram" autocomplete="name" maxlength="60" required>
+          </div>
+          <p class="field-err" id="errName"></p>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="fAge">Âge <em>*</em></label>
+            <div class="input-wrap" id="wrapAge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18" stroke-linecap="round"/></svg>
+              <input id="fAge" type="number" min="12" max="99" inputmode="numeric" placeholder="Ex. 34" required>
+            </div>
+            <p class="field-err" id="errAge"></p>
+          </div>
+          <div class="field">
+            <label for="fEmail">E-mail <span>(facultatif)</span></label>
+            <div class="input-wrap" id="wrapEmail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input id="fEmail" type="email" placeholder="vous@exemple.com" autocomplete="email">
+            </div>
+            <p class="field-err" id="errEmail"></p>
+          </div>
+        </div>
+        <p class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke-linecap="round"/></svg>Vos informations restent uniquement sur cet appareil — aucun envoi vers un serveur.</p>
+        <button class="primary" type="submit" id="btnStart">Commencer le test →</button>
+      </form>
+
+      <div class="donation" data-donation="compact"></div>
+      <div class="best-line" id="bestLine"></div>
+      <p class="disclaimer">Test ludique et indicatif — il ne remplace pas une évaluation psychométrique officielle (WAIS).</p>
+    </div>
+  </section>
+
+  <section id="screen-test" class="screen">
+    <div class="card">
+      <div class="timer" id="timer">30:00</div>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="meta">
+        <span class="q-count" id="qCount">QUESTION 1 / 40</span>
+        <span class="chip" id="qCat"></span>
+      </div>
+      <div class="qbody" id="qBody">
+        <h2 class="q-text" id="qText"></h2>
+        <div class="q-figure" id="qFigure"></div>
+        <div class="options" id="qOptions"></div>
+      </div>
+      <button class="primary" id="btnValidate" disabled>Valider et Suivant →</button>
+      <button class="ghost" id="btnSkip">Passer cette question</button>
+    </div>
+  </section>
+
+  <section id="screen-results" class="screen">
+    <div class="card">
+      <h2 class="res-title">Vos résultats</h2>
+      <p class="res-profile" id="resProfile"></p>
+      <div class="auto-note" id="autoNote">⏱️ Temps écoulé — le test a été validé automatiquement.</div>
+
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 200 118" class="gauge" aria-hidden="true">
+          <defs><linearGradient id="ggrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f9df0"/><stop offset=".5" stop-color="#16a34a"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+          <path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#dbe5ee" stroke-width="14" stroke-linecap="round"/>
+          <path id="gaugeArc" d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="url(#ggrad)" stroke-width="14" stroke-linecap="round" stroke-dasharray="251.4" stroke-dashoffset="251.4"/>
+          <g id="needle"><line x1="100" y1="100" x2="36" y2="100" stroke="#152a42" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="100" r="7" fill="#152a42"/></g>
+          <text x="20" y="116" class="gauge-tick">70</text>
+          <text x="80" y="14" text-anchor="middle" class="gauge-tick">100</text>
+          <text x="180" y="116" text-anchor="end" class="gauge-tick">140</text>
+        </svg>
+        <div class="iq-num"><span id="iqVal">0</span><small>QI ESTIMÉ</small></div>
+      </div>
+      <div class="classif"><span id="classif"></span></div>
+      <div class="age-note" id="ageNote"></div>
+
+      <div class="res-stats">
+        <div class="stat"><b id="statScore">0/40</b><small>BONNES RÉPONSES</small></div>
+        <div class="stat"><b id="statTime">00:00</b><small>TEMPS UTILISÉ</small></div>
+        <div class="stat"><b id="statPct">0%</b><small>RÉUSSITE</small></div>
+      </div>
+
+      <div class="res-block"><h3>PROFIL PAR CATÉGORIE</h3><div id="catBars"></div></div>
+      <div class="res-block"><h3>VOTRE POSITION (COURBE STANDARD)</h3><div id="curveBox"></div></div>
+
+      <div class="res-actions">
+        <button class="primary" id="btnReview">Voir la correction détaillée</button>
+        <button class="secondary" id="btnRestart">Recommencer le test</button>
+      </div>
+
+      <div class="donation" data-donation="full"></div>
+      <p class="disclaimer">QI estimé à partir du score, ajusté selon l’âge (référence : moyenne 100, écart-type 15). Résultat indicatif, sans valeur clinique.</p>
+    </div>
+  </section>
+
+  <section id="screen-review" class="screen">
+    <div class="rev-top">
+      <button class="back-btn" id="btnBackResults">← Résultats</button>
+      <h2>Correction détaillée</h2>
+    </div>
+    <div id="revList"></div>
+  </section>
+
+</main>
+
+<footer>
+  Conception &amp; Développement : <strong>Emre Bayram</strong><br>
+  © 2026 — Tous droits réservés.<br>
+  <a class="foot-don" href="https://www.paypal.me/emrebayram34" target="_blank" rel="noopener noreferrer">♥️ Soutenir le projet via PayPal</a>
+</footer>
+
+<script>
+"use strict";
+const Fragment = Symbol("Fragment");
+function h(tag, props, ...children) {
+  if (tag === Fragment) return children.join("");
+  const attrs = Object.entries(props || {}).filter(([k,v]) => k !== "key" && k !== "ref" && v != null && v !== false)
+    .map(([k,v]) => { const name = k === "className" ? "class" : k === "htmlFor" ? "for" : k;
+      if (v === true) return ` ${name}=""`;
+      return ` ${name}="${String(v).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}"`;
+    }).join("");
+  return `<${tag}${attrs}>${children.join("")}</${tag}>`;
+}
+/* ==================== OUTILS SVG ==================== */
+const svgWrap = (inner, vb = "0 0 100 100", cls = "fig") => h("svg", { viewBox: vb, class: cls, xmlns: "http://www.w3.org/2000/svg", role: "img" }, inner);
+const ARROW = c => h("path", { d: "M50 12 L78 44 L61 44 L61 88 L39 88 L39 44 L22 44 Z", fill: c, stroke: "#4c1d95", "stroke-width": "3", "stroke-linejoin": "round" });
+const arrowFig = (deg, c = "#7c3aed") => svgWrap(h("g", { transform: `rotate(${deg} 50 50)` }, ARROW(c)));
+function arrowSeriesFig() {
+    const degs = [0, 90, 180, null];
+    let inner = h("rect", { x: "2", y: "2", width: "396", height: "96", rx: "12", fill: "#f8fafc", stroke: "#cbd5e1", "stroke-width": "2" });
+    degs.forEach((d, i) => {
+        const ox = i * 100;
+        if (i > 0)
+            inner += h("line", { x1: ox, y1: "6", x2: ox, y2: "94", stroke: "#cbd5e1", "stroke-width": "2" });
+        if (d == null)
+            inner += h("text", { x: ox + 50, y: "66", "text-anchor": "middle", "font-size": "40", "font-weight": "800", fill: "#94a3b8" }, "?");
+        else
+            inner += h("g", { transform: `translate(${ox} 0) rotate(${d} 50 50)` }, ARROW("#7c3aed"));
+    });
+    return svgWrap(inner, "0 0 400 100", "fig fig-wide");
+}
+function arrowMatrixFig() {
+    const dirs = [[0, 90, 180], [90, 180, 270], [180, 270, null]];
+    let inner = h("rect", { x: "2", y: "2", width: "296", height: "296", rx: "14", fill: "#f8fafc", stroke: "#cbd5e1", "stroke-width": "2" });
+    for (let i = 1; i < 3; i++)
+        inner += h(Fragment, null,
+            h("line", { x1: i * 100, y1: "6", x2: i * 100, y2: "294", stroke: "#cbd5e1", "stroke-width": "2" }),
+            h("line", { x1: "6", y1: i * 100, x2: "294", y2: i * 100, stroke: "#cbd5e1", "stroke-width": "2" }));
+    dirs.forEach((row, ry) => row.forEach((d, rx) => {
+        if (d == null)
+            inner += h("text", { x: rx * 100 + 50, y: ry * 100 + 65, "text-anchor": "middle", "font-size": "42", "font-weight": "800", fill: "#94a3b8" }, "?");
+        else
+            inner += h("g", { transform: `translate(${rx*100} ${ry*100}) rotate(${d} 50 50)` }, ARROW("#7c3aed"));
+    }));
+    return svgWrap(inner, "0 0 300 300");
+}
+const L_BASE = [[0, 0], [0, 1], [0, 2], [1, 2]];
+const norm = cs => { const mx = Math.min(...cs.map(c => c[0])), my = Math.min(...cs.map(c => c[1])); return cs.map(([x, y]) => [x - mx, y - my]); };
+const rotCW = cs => { const my = Math.max(...cs.map(c => c[1])); return norm(cs.map(([x, y]) => [my - y, x])); };
+const mirr = cs => { const mx = Math.max(...cs.map(c => c[0])); return norm(cs.map(([x, y]) => [mx - x, y])); };
+const L90 = rotCW(L_BASE), L180 = rotCW(L90), L270 = rotCW(L180), LM = mirr(L_BASE);
+function cellsFig(cells) {
+    const w = Math.max(...cells.map(c => c[0])) + 1, height = Math.max(...cells.map(c => c[1])) + 1, s = 24, p = 6;
+    const r = cells.map(([x, y]) => h("rect", { x: p + x * s + 1.5, y: p + y * s + 1.5, width: s - 3, height: s - 3, rx: "5", fill: "#8b5cf6", stroke: "#4c1d95", "stroke-width": "2" })).join("");
+    return svgWrap(r, `0 0 ${w * s + p * 2} ${height * s + p * 2}`);
+}
+const DOT_POS = { 1: [[50, 50]], 2: [[32, 32], [68, 68]], 3: [[30, 30], [50, 50], [70, 70]], 4: [[32, 32], [68, 32], [32, 68], [68, 68]], 5: [[30, 30], [70, 30], [50, 50], [30, 70], [70, 70]], 6: [[32, 28], [68, 28], [32, 50], [68, 50], [32, 72], [68, 72]] };
+const dotsFig = n => svgWrap(DOT_POS[n].map(([x, y]) => h("circle", { cx: x, cy: y, r: "10", fill: "#d97706" })).join(""));
+function dotMatrixFig() {
+    let inner = h(Fragment, null,
+        h("rect", { x: "2", y: "2", width: "196", height: "196", rx: "14", fill: "#f8fafc", stroke: "#cbd5e1", "stroke-width": "2" }),
+        h("line", { x1: "100", y1: "6", x2: "100", y2: "194", stroke: "#cbd5e1", "stroke-width": "2" }),
+        h("line", { x1: "6", y1: "100", x2: "194", y2: "100", stroke: "#cbd5e1", "stroke-width": "2" }));
+    const put = (n, ox, oy) => DOT_POS[n].map(([x, y]) => h("circle", { cx: ox + x * 0.9 + 5, cy: oy + y * 0.9 + 5, r: "9", fill: "#d97706" })).join("");
+    inner += put(1, 0, 0) + put(2, 100, 0) + put(2, 0, 100);
+    inner += h("text", { x: "150", y: "163", "text-anchor": "middle", "font-size": "44", "font-weight": "800", fill: "#94a3b8" }, "?");
+    return svgWrap(inner, "0 0 200 200");
+}
+const trianglesFig = () => svgWrap(h(Fragment, null,
+    h("path", { d: "M50 10 L90 90 L10 90 Z", fill: "#ede9fe", stroke: "#7c3aed", "stroke-width": "3", "stroke-linejoin": "round" }),
+    h("line", { x1: "50", y1: "10", x2: "36.7", y2: "90", stroke: "#7c3aed", "stroke-width": "2.5" }),
+    h("line", { x1: "50", y1: "10", x2: "63.3", y2: "90", stroke: "#7c3aed", "stroke-width": "2.5" })));
+const shapeFig = k => {
+    if (k === "circle")
+        return svgWrap(h("circle", { cx: "50", cy: "50", r: "26", fill: "#7c3aed" }));
+    if (k === "square")
+        return svgWrap(h("rect", { x: "24", y: "24", width: "52", height: "52", rx: "6", fill: "#7c3aed" }));
+    if (k === "triangle")
+        return svgWrap(h("path", { d: "M50 22 L80 76 L20 76 Z", fill: "#7c3aed" }));
+    return svgWrap(h("path", { d: "M50 18 L59 41 L84 41 L64 56 L71 80 L50 65 L29 80 L36 56 L16 41 L41 41 Z", fill: "#7c3aed" }));
+};
+function latinFig() {
+    const rows = [["circle", "square", "triangle"], ["square", "triangle", "circle"], ["triangle", "circle", null]];
+    let inner = h("rect", { x: "2", y: "2", width: "296", height: "296", rx: "14", fill: "#f8fafc", stroke: "#cbd5e1", "stroke-width": "2" });
+    for (let i = 1; i < 3; i++)
+        inner += h(Fragment, null,
+            h("line", { x1: i * 100, y1: "6", x2: i * 100, y2: "294", stroke: "#cbd5e1", "stroke-width": "2" }),
+            h("line", { x1: "6", y1: i * 100, x2: "294", y2: i * 100, stroke: "#cbd5e1", "stroke-width": "2" }));
+    rows.forEach((r, ry) => r.forEach((k, rx) => {
+        const cx = rx * 100 + 50, cy = ry * 100 + 50;
+        if (!k) {
+            inner += h("text", { x: cx, y: cy + 15, "text-anchor": "middle", "font-size": "42", "font-weight": "800", fill: "#94a3b8" }, "?");
+            return;
+        }
+        if (k === "circle")
+            inner += h("circle", { cx: cx, cy: cy, r: "24", fill: "#7c3aed" });
+        if (k === "square")
+            inner += h("rect", { x: cx - 24, y: cy - 24, width: "48", height: "48", rx: "6", fill: "#7c3aed" });
+        if (k === "triangle")
+            inner += h("path", { d: `M${cx} ${cy-26} L${cx+26} ${cy+22} L${cx-26} ${cy+22} Z`, fill: "#7c3aed" });
+    }));
+    return svgWrap(inner, "0 0 300 300");
+}
+const gridFig = () => {
+    let inner = h("rect", { x: "10", y: "10", width: "80", height: "80", fill: "#f8fafc", stroke: "#7c3aed", "stroke-width": "3" });
+    [36.7, 63.3].forEach(p => { inner += h(Fragment, null,
+        h("line", { x1: p, y1: "10", x2: p, y2: "90", stroke: "#7c3aed", "stroke-width": "2" }),
+        h("line", { x1: "10", y1: p, x2: "90", y2: p, stroke: "#7c3aed", "stroke-width": "2" })); });
+    return svgWrap(inner);
+};
+function isoFig(cubes) {
+    const w = 16, cellH = 9, v = 18, g = 1.12, pal = ["#c4b5fd", "#8b5cf6", "#6d28d9", "#4c1d95"];
+    const sorted = [...cubes].sort((a, b) => (a[0] + a[1]) - (b[0] + b[1]) || a[2] - b[2]);
+    const parts = [], pts = [];
+    sorted.forEach(([x, y, z]) => {
+        const X = (x - y) * w * g, Y = (x + y) * cellH * g - z * v * g;
+        parts.push(h("polygon", { points: `${X - w},${Y} ${X},${Y + cellH} ${X},${Y + cellH + v} ${X - w},${Y + v}`, fill: pal[1], stroke: pal[3], "stroke-width": "1.5", "stroke-linejoin": "round" }), h("polygon", { points: `${X + w},${Y} ${X},${Y + cellH} ${X},${Y + cellH + v} ${X + w},${Y + v}`, fill: pal[2], stroke: pal[3], "stroke-width": "1.5", "stroke-linejoin": "round" }), h("polygon", { points: `${X},${Y - cellH} ${X + w},${Y} ${X},${Y + cellH} ${X - w},${Y}`, fill: pal[0], stroke: pal[3], "stroke-width": "1.5", "stroke-linejoin": "round" }));
+        pts.push([X, Y - h], [X + w, Y], [X, Y + h + v], [X - w, Y + v], [X + w, Y + v], [X - w, Y]);
+    });
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const minX = Math.min(...xs) - 6, maxX = Math.max(...xs) + 6, minY = Math.min(...ys) - 6, maxY = Math.max(...ys) + 6;
+    return svgWrap(parts.join(""), `${minX} ${minY} ${maxX - minX} ${maxY - minY}`);
+}
+const stairCubes = [];
+for (let x = 0; x < 3; x++)
+    for (let z = 0; z <= x; z++)
+        stairCubes.push([x, 0, z]);
+const fullCubes = [];
+for (let x = 0; x < 3; x++)
+    for (let y = 0; y < 3; y++)
+        for (let z = 0; z < 3; z++)
+            fullCubes.push([x, y, z]);
+/* ==================== CATÉGORIES ==================== */
+const CATS = {
+    numerique: { label: "NUMÉRIQUE", color: "#d97706", bg: "#fef3c7" },
+    logique: { label: "LOGIQUE", color: "#1273c4", bg: "#dbeafe" },
+    verbal: { label: "VERBAL", color: "#16a34a", bg: "#dcfce7" },
+    spatial: { label: "SPATIAL", color: "#7c3aed", bg: "#ede9fe" }
+};
+const ICONS = {
+    numerique: '<svg viewBox="0 0 24 24"><path d="M18 5H7l6 7-6 7h11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    logique: '<svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.6" fill="currentColor"/><circle cx="18" cy="8" r="2.6" fill="currentColor"/><circle cx="9" cy="18" r="2.6" fill="currentColor"/><path d="M8.2 6.6l7.2 1M7 8.4l1.4 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+    verbal: '<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>',
+    spatial: '<svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 12l8-4.5M12 12L4 7.5M12 12v9" stroke="currentColor" stroke-width="2.2" fill="none"/></svg>'
+};
+/* ==================== 40 QUESTIONS VÉRIFIÉES ==================== */
+const Q = (cat, q, options, answer, explain, figure) => ({ cat, q, options, answer, explain, figure: figure || null });
+const QUESTIONS = [
+    Q("verbal", "Le chien est au chiot ce que le chat est à…", ["Chaton", "Chatte", "Félin", "Animal"], 0, "Le chiot est le petit du chien ; le chaton est le petit du chat."),
+    Q("numerique", "Complétez la suite : 3, 6, 12, 24, …", ["48", "36", "42", "30"], 0, "Chaque terme est multiplié par 2 : 24 × 2 = 48."),
+    Q("spatial", "Observez la rotation des flèches. Quelle flèche complète la série ?", [arrowFig(270), arrowFig(0), arrowFig(90), arrowFig(180)], 0, "Chaque flèche pivote d’un quart de tour (90°) dans le sens horaire : haut → droite → bas → gauche.", arrowSeriesFig()),
+    Q("logique", "Tous les chats sont des mammifères. Whiskers est un chat. Que peut-on conclure ?", ["Whiskers est un mammifère", "Whiskers est un chien", "Tous les mammifères sont des chats", "Whiskers n’est pas un mammifère"], 0, "Syllogisme : si tous les chats sont des mammifères et que Whiskers est un chat, alors Whiskers est un mammifère."),
+    Q("logique", "Marie est plus grande que Julie. Julie est plus grande que Sophie. Qui est la plus petite ?", ["Sophie", "Marie", "Julie", "Impossible à déterminer"], 0, "Marie > Julie > Sophie : Sophie est donc la plus petite."),
+    Q("verbal", "Quel est l’intrus ?", ["Flûte", "Violon", "Guitare", "Harpe"], 0, "La flûte est un instrument à vent ; les trois autres sont des instruments à cordes."),
+    Q("numerique", "Complétez la suite : 1, 4, 9, 16, 25, …", ["36", "30", "35", "49"], 0, "Ce sont les carrés parfaits : 1², 2², 3², 4², 5², puis 6² = 36."),
+    Q("spatial", "Quel panneau complète la matrice ?", [dotsFig(3), dotsFig(4), dotsFig(5), dotsFig(6)], 1, "Dans chaque ligne, le nombre de points double : 1 → 2, puis 2 → 4.", dotMatrixFig()),
+    Q("verbal", "Le livre est à la bibliothèque ce que le tableau est à…", ["Musée", "Peinture", "Cadre", "Artiste"], 0, "Les livres se conservent à la bibliothèque ; les tableaux au musée."),
+    Q("logique", "Dans une course, vous doublez la personne en 2e position. Quelle est votre nouvelle position ?", ["2e", "1re", "3e", "4e"], 0, "En doublant le deuxième, vous prenez sa place : vous êtes deuxième, pas premier."),
+    Q("numerique", "Complétez la suite : 5, 10, 8, 16, 14, …", ["28", "26", "24", "20"], 0, "On alterne ×2 et −2 : 5×2=10, 10−2=8, 8×2=16, 16−2=14, donc 14×2 = 28."),
+    Q("spatial", "Trois de ces motifs sont des rotations d’un même motif. Lequel est l’intrus (le reflet) ?", [cellsFig(L_BASE), cellsFig(L90), cellsFig(L270), cellsFig(LM)], 3, "Les trois autres motifs s’obtiennent par rotation ; celui-ci est l’image miroir, impossible à obtenir par simple rotation."),
+    Q("verbal", "Complétez la suite de lettres : A, C, E, G, …", ["I", "H", "J", "K"], 0, "On saute une lettre à chaque fois : A, C, E, G, I."),
+    Q("logique", "Tous les Zorks sont des Blips. Aucun Blip n’est rouge. Que peut-on conclure ?", ["Aucun Zork n’est rouge", "Tous les Zorks sont rouges", "Certains Zorks sont rouges", "Tous les Blips sont des Zorks"], 0, "Si aucun Blip n’est rouge et que tous les Zorks sont des Blips, alors aucun Zork n’est rouge."),
+    Q("numerique", "Complétez la suite : 2, 5, 11, 23, …", ["47", "46", "45", "44"], 0, "Règle : ×2 puis +1. 2×2+1=5, 5×2+1=11, 11×2+1=23, donc 23×2+1 = 47."),
+    Q("spatial", "Combien de triangles contient cette figure ?", ["6", "5", "7", "8"], 0, "3 petits triangles + 2 triangles moyens (formés de 2 parties) + 1 grand triangle = 6.", trianglesFig()),
+    Q("verbal", "Quel mot est le plus proche de « éphémère » ?", ["Passager", "Éternel", "Solide", "Lumineux"], 0, "« Éphémère » signifie qui dure très peu de temps : synonyme de « passager »."),
+    Q("logique", "3 machines produisent 3 pièces en 3 minutes. Combien de temps faut-il à 100 machines pour produire 100 pièces ?", ["3 minutes", "33 minutes", "100 minutes", "300 minutes"], 0, "Chaque machine produit 1 pièce en 3 minutes. 100 machines produisent donc 100 pièces en 3 minutes."),
+    Q("numerique", "Complétez la suite : 2, 3, 5, 8, 13, …", ["21", "18", "20", "26"], 0, "Chaque terme est la somme des deux précédents : 8 + 13 = 21."),
+    Q("spatial", "Quelle figure est le modèle tourné d’un quart de tour dans le sens horaire ?", [cellsFig(L90), cellsFig(L_BASE), cellsFig(L180), cellsFig(LM)], 0, "Il faut une rotation de 90° horaire. Le reflet et la rotation à 180° sont des pièges.", h("div", null,
+        h("div", { class: "model-label" }, "MOD\u00C8LE"),
+        cellsFig(L_BASE))),
+    Q("verbal", "L’aube est au crépuscule ce que la naissance est à…", ["Mort", "Vie", "Enfance", "Matin"], 0, "L’aube ouvre le jour et le crépuscule le ferme ; la naissance ouvre la vie et la mort la ferme."),
+    Q("logique", "Tous les musiciens de cet orchestre savent lire la musique. Léa sait lire la musique. Que peut-on conclure ?", ["On ne peut pas conclure que Léa est dans l’orchestre", "Léa est musicienne de l’orchestre", "Léa n’est pas musicienne de l’orchestre", "Tous ceux qui lisent la musique sont dans l’orchestre"], 0, "Savoir lire la musique ne suffit pas pour être dans l’orchestre : la réciproque n’est pas garantie."),
+    Q("numerique", "Complétez la suite : 2, 6, 12, 20, 30, …", ["42", "40", "36", "44"], 0, "Les écarts augmentent de 2 : +4, +6, +8, +10, puis +12 → 30 + 12 = 42."),
+    Q("spatial", "Quelle forme manque dans la matrice ?", [shapeFig("square"), shapeFig("circle"), shapeFig("triangle"), shapeFig("star")], 0, "Chaque ligne et chaque colonne contient une fois chaque forme : il manque le carré.", latinFig()),
+    Q("verbal", "Quel est l’intrus ?", ["Mars", "Lundi", "Mardi", "Jeudi"], 0, "Mars est un mois de l’année ; les trois autres sont des jours de la semaine."),
+    Q("logique", "Certains A sont B. Tous les B sont C. Que peut-on conclure ?", ["Certains A sont C", "Tous les A sont C", "Aucun A n’est C", "Tous les C sont A"], 0, "Les A qui sont B sont aussi C : donc certains A sont C, mais pas forcément tous."),
+    Q("numerique", "Complétez la suite : 1, 2, 6, 24, 120, …", ["720", "600", "240", "840"], 0, "On multiplie par 2, puis 3, puis 4, puis 5, puis 6 : 120 × 6 = 720."),
+    Q("spatial", "Combien de carrés (de toutes tailles) contient cette grille ?", ["14", "12", "13", "16"], 0, "9 carrés de 1×1 + 4 carrés de 2×2 + 1 carré de 3×3 = 14.", gridFig()),
+    Q("verbal", "Complétez la suite de lettres : B, D, G, K, …", ["P", "N", "O", "M"], 0, "Rangs dans l’alphabet : +2, +3, +4, puis +5. K (11e) + 5 = P (16e)."),
+    Q("logique", "Une seule de ces inscriptions est vraie. A : « Le trésor est ici. » B : « Le trésor n’est pas ici. » C : « Le trésor n’est pas dans A. » Où est le trésor ?", ["Dans la boîte B", "Dans la boîte A", "Dans la boîte C", "Impossible à déterminer"], 0, "Si le trésor est en B : A est fausse, B est fausse, C est vraie → une seule inscription vraie. En A ou en C, deux inscriptions seraient vraies."),
+    Q("numerique", "Complétez la suite : 2, 5, 10, 17, 26, …", ["37", "35", "36", "38"], 0, "Chaque terme vaut n² + 1 : 1+1, 4+1, 9+1, 16+1, 25+1, puis 36+1 = 37."),
+    Q("spatial", "Combien de cubes composent cet escalier (y compris les cubes cachés qui soutiennent les autres) ?", ["6", "5", "7", "8"], 0, "Trois colonnes de 1, 2 et 3 cubes : 1 + 2 + 3 = 6.", isoFig(stairCubes)),
+    Q("verbal", "Le sculpteur est à l’argile ce que l’écrivain est à…", ["Mots", "Livre", "Lecteur", "Plume"], 0, "Le sculpteur travaille l’argile comme l’écrivain travaille les mots : relation artisan → matériau."),
+    Q("logique", "Une bouteille et son bouchon coûtent 1,10 € au total. La bouteille coûte 1 € de plus que le bouchon. Combien coûte le bouchon ?", ["0,05 €", "0,10 €", "0,15 €", "0,01 €"], 0, "Bouchon = x, bouteille = x + 1. Total : 2x + 1 = 1,10 → x = 0,05 €."),
+    Q("numerique", "Complétez la suite : 3, 4, 6, 10, 18, …", ["34", "30", "32", "36"], 0, "Les écarts doublent : +1, +2, +4, +8, puis +16 → 18 + 16 = 34."),
+    Q("spatial", "Quelle flèche complète la matrice ?", [arrowFig(0), arrowFig(90), arrowFig(180), arrowFig(270)], 0, "En avançant d’une case (vers la droite ou vers le bas), la flèche tourne de 90° dans le sens horaire : bas → gauche → haut.", arrowMatrixFig()),
+    Q("verbal", "Dans un code, MOT s’écrit NPU. Comment s’écrit CHAT ?", ["DIBU", "DIBV", "DJBU", "EIBU"], 0, "Chaque lettre est décalée de +1 dans l’alphabet : C→D, H→I, A→B, T→U → DIBU."),
+    Q("logique", "Les chevaliers disent toujours la vérité, les fripons mentent toujours. X vous dit : « Nous sommes tous les deux des fripons. » Que sont X et Y ?", ["X est un fripon, Y est un chevalier", "X est un chevalier, Y est un fripon", "X et Y sont des chevaliers", "X et Y sont des fripons"], 0, "Si X était chevalier, sa phrase serait vraie et ferait de lui un fripon : contradiction. X est donc fripon, sa phrase est fausse, et Y est chevalier."),
+    Q("numerique", "Complétez la suite : 2, 12, 36, 80, 150, …", ["252", "240", "246", "258"], 0, "Chaque terme vaut n³ + n² : 1+1, 8+4, 27+9, 64+16, 125+25, puis 216+36 = 252."),
+    Q("spatial", "Un grand cube 3×3×3 est peint sur toutes ses faces, puis découpé en 27 petits cubes. Combien de petits cubes ont exactement 2 faces peintes ?", ["12", "6", "8", "24"], 0, "Ce sont les cubes situés au milieu des 12 arêtes : ni les coins (3 faces), ni les centres de faces (1 face), ni le cœur (0 face).", isoFig(fullCubes))
+];
+/* ==================== ÉTAT & NAVIGATION ==================== */
+const TOTAL = 1800, N = QUESTIONS.length, PAYPAL = "https://www.paypal.me/emrebayram34";
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = id => document.getElementById(id);
+const state = { playing: false, idx: 0, answers: [], selected: null, startAt: 0, timerId: null, session: [], elapsed: 0 };
+let profile = { name: "", age: null, email: "" };
+function show(name) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    $("screen-" + name).classList.add("active");
+    window.scrollTo(0, 0);
+    if (name === "intro")
+        updateBestLine();
+}
+function updateBestLine() {
+    let b = 0;
+    try {
+        b = +localStorage.getItem("qipro_best_iq") || 0;
+    }
+    catch (e) { }
+    const hello = profile.name ? ("Bon retour, " + profile.name + " — ") : "";
+    $("bestLine").textContent = b > 0 ? (hello + "meilleur QI estimé : " + b) : "";
+}
+function buildSession() {
+    return QUESTIONS.map(q => {
+        const order = [0, 1, 2, 3];
+        for (let i = 3; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [order[i], order[j]] = [order[j], order[i]];
+        }
+        return { q, order, correct: order.indexOf(q.answer) };
+    });
+}
+const fmt = s => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+/* ---------- Profil / formulaire ---------- */
+function setErr(key, msg) { $("wrap" + key).classList.add("invalid"); const e = $("err" + key); e.textContent = msg; e.classList.add("show"); }
+function clearErr(key) { $("wrap" + key).classList.remove("invalid"); const e = $("err" + key); e.textContent = ""; e.classList.remove("show"); }
+function validateProfile(showErrors) {
+    const name = $("fName").value.trim(), age = Number($("fAge").value), email = $("fEmail").value.trim();
+    let ok = true;
+    if (name.length < 2) {
+        if (showErrors)
+            setErr("Name", "Indiquez votre nom (2 caractères minimum).");
+        ok = false;
+    }
+    else
+        clearErr("Name");
+    if (!Number.isInteger(age) || age < 12 || age > 99) {
+        if (showErrors)
+            setErr("Age", "Âge requis : un nombre entier entre 12 et 99 ans.");
+        ok = false;
+    }
+    else
+        clearErr("Age");
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        if (showErrors)
+            setErr("Email", "Adresse e-mail invalide.");
+        ok = false;
+    }
+    else
+        clearErr("Email");
+    return ok ? { name, age, email } : null;
+}
+function loadProfile() {
+    try {
+        const p = JSON.parse(localStorage.getItem("qipro_profile") || "null");
+        if (p && typeof p === "object") {
+            profile = { name: p.name || "", age: p.age || null, email: p.email || "" };
+            $("fName").value = profile.name;
+            $("fAge").value = profile.age || "";
+            $("fEmail").value = profile.email;
+        }
+    }
+    catch (e) { }
+}
+$("profileForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const p = validateProfile(true);
+    if (!p) {
+        const f = $("profileForm");
+        f.classList.remove("shake");
+        void f.offsetWidth;
+        f.classList.add("shake");
+        const bad = document.querySelector(".input-wrap.invalid input");
+        if (bad)
+            bad.focus();
+        return;
+    }
+    profile = p;
+    try {
+        localStorage.setItem("qipro_profile", JSON.stringify(profile));
+    }
+    catch (e) { }
+    startTest();
+});
+["fName", "fAge", "fEmail"].forEach(id => $(id).addEventListener("input", () => {
+    const key = id.slice(1);
+    clearErr(key);
+}));
+/* ---------- Donation PayPal ---------- */
+function initDonations() {
+    document.querySelectorAll("[data-donation]").forEach(box => {
+        const full = box.dataset.donation === "full";
+        box.innerHTML = `
+      <div class="don-inner">
+        <div class="don-head">
+          <span class="don-heart"><svg viewBox="0 0 24 24"><path d="M12 21s-8-5.3-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.7-8 11-8 11z"/></svg></span>
+          <div><strong>${full ? "Soutenez Test de QI Pro" : "Ce test est gratuit"}</strong><small>Un don libre aide à maintenir et améliorer le projet.</small></div>
+        </div>
+        <div class="don-amounts">
+          <button type="button" class="don-chip active" data-amt="">Libre</button>
+          <button type="button" class="don-chip" data-amt="3">3 €</button>
+          <button type="button" class="don-chip" data-amt="5">5 €</button>
+          <button type="button" class="don-chip" data-amt="10">10 €</button>
+        </div>
+        <a class="don-btn" href="${PAYPAL}" target="_blank" rel="noopener noreferrer">
+          <span class="pp-mark"><i>Pay</i><b>Pal</b></span><span class="don-label">Faire un don via PayPal</span><span class="arr">→</span>
+        </a>
+        <small class="don-note">Paiement sécurisé via PayPal.Me — @emrebayram34</small>
+      </div>`;
+        const chips = box.querySelectorAll(".don-chip"), link = box.querySelector(".don-btn"), label = box.querySelector(".don-label");
+        chips.forEach(ch => ch.addEventListener("click", () => {
+            chips.forEach(c => c.classList.remove("active"));
+            ch.classList.add("active");
+            const amt = ch.dataset.amt;
+            link.href = amt ? PAYPAL + "/" + amt + "EUR" : PAYPAL;
+            label.textContent = amt ? ("Donner " + amt + " € via PayPal") : "Faire un don via PayPal";
+        }));
+    });
+}
+/* ---------- Test ---------- */
+function startTest() {
+    if (state.timerId)
+        clearInterval(state.timerId);
+    state.session = buildSession();
+    state.answers = new Array(N).fill(null);
+    state.idx = 0;
+    state.selected = null;
+    state.playing = true;
+    state.startAt = Date.now();
+    show("test");
+    renderQuestion();
+    tick();
+    state.timerId = setInterval(tick, 250);
+}
+function tick() {
+    const rem = Math.max(0, TOTAL - Math.floor((Date.now() - state.startAt) / 1000));
+    $("timer").textContent = fmt(rem);
+    $("timer").classList.toggle("urgent", rem <= 60 && rem > 0);
+    if (rem <= 0)
+        finish(true);
+}
+function renderQuestion() {
+    const s = state.session[state.idx], q = s.q, cat = CATS[q.cat];
+    state.selected = null;
+    $("btnValidate").disabled = true;
+    $("btnValidate").textContent = state.idx === N - 1 ? "Terminer le test ✓" : "Valider et Suivant →";
+    $("qCount").textContent = "QUESTION " + (state.idx + 1) + " / " + N;
+    const chip = $("qCat");
+    chip.innerHTML = ICONS[q.cat] + cat.label;
+    chip.style.color = cat.color;
+    chip.style.background = cat.bg;
+    $("progressFill").style.width = (state.idx / N * 100) + "%";
+    $("qText").textContent = q.q;
+    const fig = $("qFigure");
+    fig.innerHTML = q.figure || "";
+    fig.style.display = q.figure ? "flex" : "none";
+    const opts = $("qOptions");
+    const allSvg = q.options.every(o => o.startsWith("<svg"));
+    const maxLen = Math.max(...q.options.map(o => o.length));
+    opts.className = "options " + ((allSvg || maxLen <= 18) ? "grid" : "list");
+    opts.innerHTML = "";
+    s.order.forEach((oi, di) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "opt";
+        const val = q.options[oi];
+        if (val.startsWith("<svg")) {
+            b.classList.add("opt-fig");
+            b.innerHTML = val;
+        }
+        else
+            b.innerHTML = "<span>" + val + "</span>";
+        b.innerHTML += '<span class="tick">✓</span>';
+        b.addEventListener("click", () => selectOption(di, b));
+        opts.appendChild(b);
+    });
+    const body = $("qBody");
+    body.style.animation = "none";
+    void body.offsetWidth;
+    body.style.animation = "";
+}
+function selectOption(di, btn) {
+    document.querySelectorAll("#qOptions .opt").forEach(o => o.classList.remove("selected"));
+    btn.classList.add("selected");
+    state.selected = di;
+    $("btnValidate").disabled = false;
+}
+function advance() { state.idx++; if (state.idx >= N)
+    finish(false);
+else
+    renderQuestion(); }
+$("btnValidate").addEventListener("click", () => { if (state.selected == null)
+    return; state.answers[state.idx] = state.selected; advance(); });
+$("btnSkip").addEventListener("click", () => { state.answers[state.idx] = null; advance(); });
+$("btnRestart").addEventListener("click", startTest);
+$("btnReview").addEventListener("click", () => { buildReview(); show("review"); });
+$("btnBackResults").addEventListener("click", () => show("results"));
+document.addEventListener("keydown", e => {
+    if (!state.playing)
+        return;
+    if (e.key >= "1" && e.key <= "4") {
+        const b = $("qOptions").children[+e.key - 1];
+        if (b)
+            b.click();
+    }
+    else if (e.key === "Enter" && !$("btnValidate").disabled)
+        $("btnValidate").click();
+});
+window.addEventListener("beforeunload", e => { if (state.playing) {
+    e.preventDefault();
+    e.returnValue = "";
+} });
+/* ==================== RÉSULTATS ==================== */
+function ageAdjust(age) {
+    if (age < 16)
+        return { adj: 8, band: "12–15 ans" };
+    if (age < 20)
+        return { adj: 4, band: "16–19 ans" };
+    if (age < 40)
+        return { adj: 0, band: "20–39 ans" };
+    if (age < 50)
+        return { adj: 1, band: "40–49 ans" };
+    if (age < 60)
+        return { adj: 3, band: "50–59 ans" };
+    if (age < 70)
+        return { adj: 5, band: "60–69 ans" };
+    return { adj: 7, band: "70 ans et +" };
+}
+function classify(iq) {
+    if (iq >= 125)
+        return ["Très haut niveau", "#7c3aed"];
+    if (iq >= 115)
+        return ["Niveau supérieur", "#1273c4"];
+    if (iq >= 105)
+        return ["Au-dessus de la moyenne", "#16a34a"];
+    if (iq >= 90)
+        return ["Dans la moyenne", "#16a34a"];
+    if (iq >= 80)
+        return ["Sous la moyenne", "#d97706"];
+    return ["Niveau fragile", "#d63b2f"];
+}
+function countUp(el, to, dur) {
+    if (reduced) {
+        el.textContent = to;
+        return;
+    }
+    const t0 = performance.now();
+    (function f(t) { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3); el.textContent = Math.round(to * e); if (p < 1)
+        requestAnimationFrame(f); })(t0);
+}
+function finish(auto) {
+    if (state.timerId) {
+        clearInterval(state.timerId);
+        state.timerId = null;
+    }
+    state.playing = false;
+    state.elapsed = Math.min(TOTAL, Math.floor((Date.now() - state.startAt) / 1000));
+    $("progressFill").style.width = "100%";
+    const score = state.answers.reduce((acc, a, i) => acc + (a === state.session[i].correct ? 1 : 0), 0);
+    const { adj, band } = ageAdjust(profile.age || 30);
+    const iq = Math.max(70, Math.min(140, Math.round(70 + score * 1.5 + adj)));
+    const pct = Math.round(score / N * 100);
+    try {
+        const b = +localStorage.getItem("qipro_best_iq") || 0;
+        if (iq > b)
+            localStorage.setItem("qipro_best_iq", String(iq));
+    }
+    catch (e) { }
+    $("autoNote").classList.toggle("show", auto);
+    $("resProfile").textContent = (profile.name || "Participant") + " · " + (profile.age || "—") + " ans";
+    $("ageNote").textContent = "Ajustement selon l’âge (" + band + ") : " + (adj > 0 ? "+" + adj : adj) + " point" + (Math.abs(adj) > 1 ? "s" : "") + " appliqué" + (Math.abs(adj) > 1 ? "s" : "") + " au QI estimé.";
+    $("statScore").textContent = score + "/" + N;
+    $("statTime").textContent = fmt(state.elapsed);
+    $("statPct").textContent = pct + "%";
+    const [label, color] = classify(iq);
+    const cl = $("classif");
+    cl.textContent = label;
+    cl.style.color = color;
+    cl.style.background = color + "1a";
+    const p = (iq - 70) / 70, arc = $("gaugeArc"), needle = $("needle");
+    arc.style.transition = "none";
+    needle.style.transition = "none";
+    arc.style.strokeDashoffset = "251.4";
+    needle.style.transform = "rotate(0deg)";
+    void arc.getBoundingClientRect();
+    arc.style.transition = "";
+    needle.style.transition = "";
+    setTimeout(() => { arc.style.strokeDashoffset = String(251.4 * (1 - p)); needle.style.transform = "rotate(" + p * 180 + "deg)"; }, 80);
+    countUp($("iqVal"), iq, 1250);
+    const counts = {};
+    Object.keys(CATS).forEach(k => counts[k] = { ok: 0, total: 0 });
+    state.session.forEach((s, i) => { counts[s.q.cat].total++; if (state.answers[i] === s.correct)
+        counts[s.q.cat].ok++; });
+    $("catBars").innerHTML = Object.keys(CATS).map(k => {
+        const c = CATS[k], v = counts[k], w = Math.round(v.ok / v.total * 100);
+        return h("div", { class: "bar-row" },
+            h("span", { class: "bar-label", style: `color:${c.color}` },
+                ICONS[k],
+                c.label),
+            h("span", { class: "bar-track" },
+                h("span", { class: "bar-fill", "data-w": w, style: `background:linear-gradient(90deg,${c.color}99,${c.color})` })),
+            h("span", { class: "bar-score" },
+                v.ok,
+                "/",
+                v.total));
+    }).join("");
+    requestAnimationFrame(() => requestAnimationFrame(() => { document.querySelectorAll(".bar-fill").forEach(b => b.style.width = b.dataset.w + "%"); }));
+    $("curveBox").innerHTML = bellCurve(iq);
+    show("results");
+    if (iq >= 115 && !reduced)
+        confetti();
+}
+function bellCurve(iq) {
+    const X = v => 10 + (v - 55) / 90 * 300, Y = v => 100 - 85 * Math.exp(-Math.pow((v - 100) / 15, 2) / 2);
+    let d = "M10 100";
+    for (let v = 55; v <= 145; v++)
+        d += " L" + X(v).toFixed(1) + " " + Y(v).toFixed(1);
+    const area = d + " L310 100 Z", mx = X(iq), my = Y(iq), lx = Math.min(282, Math.max(38, mx));
+    const ticks = [70, 85, 100, 115, 130].map(t => h("text", { x: X(t), y: "114", "text-anchor": "middle", "font-size": "10", "font-weight": "700", fill: "#5b7186" }, t)).join("");
+    return `<svg viewBox="0 0 320 122" class="curve-svg" role="img">
+    <defs><linearGradient id="cgrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1273c4" stop-opacity=".28"/><stop offset="1" stop-color="#1273c4" stop-opacity=".03"/></linearGradient></defs>
+    <path d="${area}" fill="url(#cgrad)"/><path d="${d}" fill="none" stroke="#1273c4" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="${mx}" y1="${my}" x2="${mx}" y2="100" stroke="#d63b2f" stroke-width="2.5" stroke-dasharray="4 3"/>
+    <circle cx="${mx}" cy="${my}" r="5" fill="#d63b2f" stroke="#fff" stroke-width="2"/>
+    <text x="${lx}" y="${Math.max(12, my - 12)}" text-anchor="middle" font-size="12" font-weight="800" fill="#152a42">Vous : ${iq}</text>${ticks}
+  </svg>`;
+}
+function confetti() {
+    const colors = ["#2f9df0", "#1273c4", "#7c3aed", "#16a34a", "#f59e0b", "#d63b2f"];
+    for (let i = 0; i < 28; i++) {
+        const c = document.createElement("span");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = colors[i % colors.length];
+        c.style.animationDuration = (2.2 + Math.random() * 1.2) + "s";
+        c.style.animationDelay = (Math.random() * 0.5) + "s";
+        if (Math.random() < 0.4)
+            c.style.borderRadius = "50%";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4200);
+    }
+}
+/* ==================== CORRECTION ==================== */
+function buildReview() {
+    const renderContent = c => c.startsWith("<svg") ? h("span", { class: "mini-fig" }, c) : h("strong", null, c);
+    $("revList").innerHTML = state.session.map((s, i) => {
+        const q = s.q, cat = CATS[q.cat], user = state.answers[i], ok = user === s.correct;
+        const status = user == null ? "skip" : (ok ? "good" : "bad"), statusLabel = user == null ? "Passée" : (ok ? "Réussie" : "Ratée");
+        const correctC = q.options[s.order[s.correct]];
+        let lines;
+        if (user == null)
+            lines = h(Fragment, null,
+                h("div", { class: "rev-line good" },
+                    "\u2713 Bonne r\u00E9ponse : ",
+                    renderContent(correctC)),
+                h("div", { class: "rev-line skip" }, "\u2013 Question pass\u00E9e (compt\u00E9e incorrecte)"));
+        else if (ok)
+            lines = h("div", { class: "rev-line good" },
+                "\u2713 Vous avez r\u00E9pondu correctement : ",
+                renderContent(correctC));
+        else
+            lines = h(Fragment, null,
+                h("div", { class: "rev-line good" },
+                    "\u2713 Bonne r\u00E9ponse : ",
+                    renderContent(correctC)),
+                h("div", { class: "rev-line bad" },
+                    "\u2717 Votre r\u00E9ponse : ",
+                    renderContent(q.options[s.order[user]])));
+        return `<article class="rev-item">
+      <header><span class="rev-num">${i + 1}</span><span class="chip" style="color:${cat.color};background:${cat.bg}">${ICONS[q.cat]}${cat.label}</span><span class="rev-status ${status}">${statusLabel}</span></header>
+      <p class="rev-q">${q.q}</p>${q.figure ? h("div", { class: "rev-fig" },
+            "$",
+            q.figure) : ""}${lines}
+      <div class="rev-exp"><strong>Explication.</strong> ${q.explain}</div>
+    </article>`;
+    }).join("");
+}
+/* ==================== DÉTECTION APERÇU + INIT ==================== */
+(function detectPreview() {
+    let framed = false;
+    try {
+        framed = window.self !== window.top;
+    }
+    catch (e) {
+        framed = true;
+    }
+    const wv = /;\s*wv\)|WebView/i.test(navigator.userAgent || "");
+    const content = /^content:/.test(location.protocol);
+    if (false) {
+        const b = $("previewBanner");
+        if (b)
+            b.classList.add("show");
+    }
+    const close = $("previewClose");
+    if (close)
+        close.addEventListener("click", () => $("previewBanner").classList.remove("show"));
+})();
+$("catLegend").innerHTML = Object.keys(CATS).map(k => {
+    const c = CATS[k];
+    return h("div", { class: "cat-item", style: `color:${c.color};border-color:${c.color}55;background:${c.bg}66` },
+        ICONS[k],
+        h("span", { style: "color:var(--ink)" },
+            c.label.charAt(0) + c.label.slice(1).toLowerCase(),
+            h("small", null, "10 questions")));
+}).join("");
+loadProfile();
+initDonations();
+updateBestLine();
+
+</script>
+</body>
+</html>
